@@ -7,7 +7,7 @@ import java.time.LocalDate;
  */
 public class StringOfCheck {
 
-    private String id;
+    private int id;
     private String market;
     private String section;
     private String product;
@@ -15,7 +15,7 @@ public class StringOfCheck {
     private double profit;
     private LocalDate date;
 
-    public StringOfCheck(String id, String market,String section, String product, double price, double profit, LocalDate date){
+    public StringOfCheck(int id, String market,String section, String product, double price, double profit, LocalDate date){
 
         this.id = id;
         this.market = market;
@@ -27,7 +27,7 @@ public class StringOfCheck {
 
     }
 
-    public StringOfCheck(String id){
+    public StringOfCheck(int id){
 
     }
 
@@ -35,11 +35,11 @@ public class StringOfCheck {
 
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

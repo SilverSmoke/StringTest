@@ -57,8 +57,15 @@ public class Controller {
 
                 ReadOnlyObjectProperty<StringOfCheck> object = area.getSelectionModel().selectedItemProperty();
 
-                System.out.println(object.getValue().getId());
-                System.out.println(object.getValue().getDate());
+                try {
+
+                    System.out.println(object.getValue());
+                    System.out.println(object.getValue().getDate());
+
+                }catch (NullPointerException er) {
+                    System.out.println(er);
+
+                }
 
             }
         });
@@ -80,7 +87,7 @@ public class Controller {
 
                 i++;
 
-                checkData.add(new StringOfCheck(resultSet.getString(1),
+                checkData.add(new StringOfCheck(Integer.parseInt(resultSet.getString(1)),
                         resultSet.getString(2), resultSet.getString(3), resultSet.getString(4),
                         Double.parseDouble(resultSet.getString(5)), Double.parseDouble(resultSet.getString(6)),
                         LocalDate.ofEpochDay(resultSet.getLong(7) / 86400)));
@@ -93,14 +100,19 @@ public class Controller {
             e.printStackTrace();
         }
 
-
-        checkData.add(new StringOfCheck(null, "Итог:", null, null, sumPrice, sumProfit, null));
+        checkData.add(new StringOfCheck(i, "Итог:", null, null, sumPrice, sumProfit, null));
 
     }
 
     public void editStart(TableColumn.CellEditEvent<StringOfCheck, String> stringOfCheckStringCellEditEvent) {
 
         System.out.println(stringOfCheckStringCellEditEvent.getTablePosition());
+
+    }
+
+    public void openDialogEditForCreate(MouseEvent mouseEvent) {
+
+
 
     }
 }
