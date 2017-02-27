@@ -11,8 +11,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="checks.controlls.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="678.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="checks.controlls.Controller">
    <children>
       <SplitPane dividerPositions="0.2236180904522613" layoutX="233.0" layoutY="81.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -27,17 +28,17 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </VBox.margin>
                               </Label>
-                              <Button onMouseClicked="#openDialogEditForCreate" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="100.0" text="Создать">
+                              <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#openDialogEditForNew" prefWidth="100.0" text="Создать">
                                  <VBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </VBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" prefWidth="100.0" text="Редактировать">
+                              <Button mnemonicParsing="false" onMouseClicked="#openDialogForEdit" prefWidth="100.0" text="Редактировать">
                                  <VBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </VBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" prefWidth="100.0" text="Удалить">
+                              <Button onMouseClicked="#deleteTransaction" mnemonicParsing="false" prefWidth="100.0" text="Удалить">
                                  <VBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </VBox.margin>
@@ -52,7 +53,7 @@
                                        <padding>
                                           <Insets top="5.0" />
                                        </padding></Label>
-                                    <DatePicker>
+                                    <DatePicker fx:id="interval">
                                        <VBox.margin>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="30.0" />
                                        </VBox.margin></DatePicker>
@@ -93,7 +94,7 @@
                </children></AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <TableView fx:id="area" layoutX="-10.0" layoutY="23.0" prefHeight="286.0" prefWidth="611.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="area" layoutX="-10.0" layoutY="23.0" prefHeight="286.0" prefWidth="611.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
                       <TableColumn fx:id="id" prefWidth="40.0" text="№" />
                       <TableColumn fx:id="market" prefWidth="150.0" text="Market" />
@@ -104,6 +105,33 @@
                         <TableColumn fx:id="date" prefWidth="120.0" text="Date" />
                     </columns>
                   </TableView>
+                  <HBox alignment="CENTER" layoutY="471.0" prefHeight="52.0" prefWidth="748.0">
+                     <children>
+                        <Label text="Итог:">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="150.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="sumPrice" text="0">
+                           <HBox.margin>
+                              <Insets left="200.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="sumProfit" text="0">
+                           <HBox.margin>
+                              <Insets left="50.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="balance" text="0">
+                           <HBox.margin>
+                              <Insets left="50.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
                </children>
             </AnchorPane>
         </items>

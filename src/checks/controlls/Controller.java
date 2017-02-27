@@ -1,5 +1,6 @@
 package checks.controlls;
 
+import checks.Main;
 import checks.model.DBManager;
 import checks.model.StringOfCheck;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -7,8 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
@@ -18,6 +18,15 @@ import java.time.LocalDate;
 
 public class Controller {
 
+
+    @FXML
+    public DatePicker interval;
+    @FXML
+    public Label sumPrice;
+    @FXML
+    public Label balance;
+    @FXML
+    public Label sumProfit;
 
     private ObservableList<StringOfCheck> checkData = FXCollections.observableArrayList();
 
@@ -42,6 +51,8 @@ public class Controller {
     public void initialize(){
 
         initData();
+
+        interval.setValue(LocalDate.now());
 
         id.setCellValueFactory(new PropertyValueFactory<StringOfCheck, String>("id"));
         market.setCellValueFactory(new PropertyValueFactory<StringOfCheck, String>("market"));
@@ -71,14 +82,17 @@ public class Controller {
         });
     }
 
-    private void initData() {
+    @FXML
+    public void initData() {
+
+        checkData.clear();
 
         int i = 0;
 
         String query = "SELECT * FROM `transaction`";
 
-        double sumPrice = 0;
-        double sumProfit = 0;
+        double priceSum = 0;
+        double profitSum = 0;
 
         ResultSet resultSet = DBManager.getResult(query);
 
@@ -92,15 +106,21 @@ public class Controller {
                         Double.parseDouble(resultSet.getString(5)), Double.parseDouble(resultSet.getString(6)),
                         LocalDate.ofEpochDay(resultSet.getLong(7) / 86400)));
 
-                sumPrice += Double.parseDouble(resultSet.getString(5));
+                priceSum += Double.parseDouble(resultSet.getString(5));
 
-                sumProfit += Double.parseDouble(resultSet.getString(6));
+                profitSum += Double.parseDouble(resultSet.getString(6));
             }
         }catch (SQLException e){
             e.printStackTrace();
         }
 
-        checkData.add(new StringOfCheck(i, "Итог:", null, null, sumPrice, sumProfit, null));
+
+        sumPrice.setText(String.valueOf(priceSum));
+
+        sumProfit.setText(String.valueOf(profitSum));
+
+        balance.setText(String.valueOf(profitSum - priceSum));
+
 
     }
 
@@ -110,9 +130,62 @@ public class Controller {
 
     }
 
-    public void openDialogEditForCreate(MouseEvent mouseEvent) {
+    public void openDialogForEdit(MouseEvent mouseEvent) {
+
+        ReadOnlyObjectProperty<StringOfCheck> object = area.getSelectionModel().selectedItemProperty();
+
+        if(object.getValue() == null){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            //alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("No Selection");
+            alert.setHeaderText("No Selected");
+            alert.setContentText("Please select a string in the table.");
+
+            alert.showAndWait();
+
+            return;
+        }
+
+        if(Main.showEditFrame(object)){
+            initData();
+        }
+
+    }
+
+    public void openDialogEditForNew(MouseEvent mouseEvent) {
+
+        if(Main.showEditFrame(null)){
+            initData();
+        }
+
+    }
 
 
+    public void deleteTransaction(MouseEvent mouseEvent) {
+
+        ReadOnlyObjectProperty<StringOfCheck> object = area.getSelectionModel().selectedItemProperty();
+
+        if(object.getValue() == null){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            //alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("No Selection");
+            alert.setHeaderText("No Selected");
+            alert.setContentText("Please select a string in the table.");
+
+            alert.showAndWait();
+
+            return;
+        }else {
+
+            String query = "DELETE FROM `transaction` WHERE `id` = " + object.getValue().getId() + "";
+
+            DBManager managerDB = new DBManager();
+
+            managerDB.updateDB(query);
+
+            initData();
+
+        }
 
     }
 }

@@ -1,7 +1,9 @@
 package checks;
 
+import checks.controlls.ControllerEditFrame;
 import checks.model.StringOfCheck;
 import javafx.application.Application;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -22,7 +24,7 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    public boolean showEditFrame(StringOfCheck stringOfCheck){
+    public static boolean showEditFrame(ReadOnlyObjectProperty<StringOfCheck> stringOfCheck){
 
         try{
 
@@ -38,12 +40,12 @@ public class Main extends Application {
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
             dialogStage.setResizable(false);
+            ControllerEditFrame controllerEditFrame = loader.getController();
+            controllerEditFrame.setTransaction(stringOfCheck);
+            controllerEditFrame.setDialogStage(dialogStage);
             dialogStage.showAndWait();
+            
 
-            /*primaryStage.setTitle("Семейный бюджет");
-            primaryStage.setScene(new Scene(root));
-            primaryStage.setResizable(false);
-            primaryStage.show();*/
             return true;
 
         }catch (IOException e){
