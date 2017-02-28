@@ -80,7 +80,7 @@
                                           <Insets left="5.0" top="5.0" />
                                        </VBox.margin>
                                     </RadioButton>
-                                    <Button mnemonicParsing="false" text="Сформировать">
+                                    <Button onMouseClicked="#goForm" mnemonicParsing="false" text="Сформировать">
                                        <VBox.margin>
                                           <Insets top="5.0" />
                                        </VBox.margin>

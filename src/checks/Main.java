@@ -44,7 +44,6 @@ public class Main extends Application {
             controllerEditFrame.setTransaction(stringOfCheck);
             controllerEditFrame.setDialogStage(dialogStage);
             dialogStage.showAndWait();
-            
 
             return true;
 

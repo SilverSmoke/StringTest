@@ -15,6 +15,8 @@ import javafx.scene.input.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 public class Controller {
 
@@ -50,7 +52,7 @@ public class Controller {
     @FXML
     public void initialize(){
 
-        initData();
+
 
         interval.setValue(LocalDate.now());
 
@@ -80,26 +82,38 @@ public class Controller {
 
             }
         });
+        initData("");
     }
 
     @FXML
-    public void initData() {
+    public void initData(String query) {
 
         checkData.clear();
 
-        int i = 0;
 
-        String query = "SELECT * FROM `transaction`";
+
+        if(query.equals("")) {
+
+            LocalDate date = interval.getValue();
+            LocalDateTime dateTime = LocalDate.of(date.getYear(), date.getMonth(), 1).atStartOfDay();
+            Long secondStart = dateTime.toEpochSecond(ZoneOffset.ofHours(6));
+            Long secondEnd = dateTime.plusMonths(1).toEpochSecond(ZoneOffset.ofHours(6));
+
+            query = "SELECT * FROM `transaction` WHERE `time` >= " + secondStart + " AND `time` < " + secondEnd + " ORDER BY `time`;";
+
+        }
 
         double priceSum = 0;
         double profitSum = 0;
 
         ResultSet resultSet = DBManager.getResult(query);
 
+        //int i = 0;
+
         try{
             while(resultSet.next()){
 
-                i++;
+                //i++;
 
                 checkData.add(new StringOfCheck(Integer.parseInt(resultSet.getString(1)),
                         resultSet.getString(2), resultSet.getString(3), resultSet.getString(4),
@@ -146,16 +160,19 @@ public class Controller {
             return;
         }
 
+        //System.out.print(Main.showEditFrame(object));
         if(Main.showEditFrame(object)){
-            initData();
+            initData("");
         }
 
     }
 
     public void openDialogEditForNew(MouseEvent mouseEvent) {
 
+        //System.out.print(Main.showEditFrame(null));
+
         if(Main.showEditFrame(null)){
-            initData();
+            initData("");
         }
 
     }
@@ -183,9 +200,23 @@ public class Controller {
 
             managerDB.updateDB(query);
 
-            initData();
+            initData("");
 
         }
+
+    }
+
+    @FXML
+    public void goForm() {
+
+        /*LocalDate date = interval.getValue();
+        LocalDateTime dateTime = LocalDate.of(date.getYear(), date.getMonth(), 1).atStartOfDay();
+        Long secondStart = dateTime.toEpochSecond(ZoneOffset.ofHours(6));
+        Long secondEnd = dateTime.plusMonths(1).toEpochSecond(ZoneOffset.ofHours(6));
+
+        String query = "SELECT * FROM `transaction` WHERE `time` >= " + secondStart + " AND `time` < " + secondEnd + " ORDER BY `time`;";
+*/
+        initData("");
 
     }
 }

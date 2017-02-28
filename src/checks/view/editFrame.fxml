@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -11,8 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<AnchorPane fx:controller="checks.controlls.ControllerEditFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="387.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="387.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="checks.controlls.ControllerEditFrame">
    <children>
       <GridPane alignment="CENTER" layoutX="94.0" layoutY="155.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -60,7 +58,7 @@
                   <Insets left="30.0" />
                </GridPane.margin>
             </Label>
-            <Label text="Дата" GridPane.rowIndex="6">
+            <Label text="Прибыль" GridPane.rowIndex="6">
                <GridPane.margin>
                   <Insets left="30.0" />
                </GridPane.margin>
@@ -70,44 +68,44 @@
                   <Insets left="20.0" right="20.0" />
                </GridPane.margin>
             </TextField>
-            <TextField fx:id="market" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <TextField fx:id="market" onAction="#nextPos" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="20.0" right="20.0" />
                </GridPane.margin>
             </TextField>
-            <TextField fx:id="section" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <TextField fx:id="section" onAction="#nextPos" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets left="20.0" right="20.0" />
                </GridPane.margin>
             </TextField>
-            <TextField fx:id="product" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <TextField fx:id="product" onAction="#nextPos" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets left="20.0" right="20.0" />
                </GridPane.margin>
             </TextField>
-            <TextField fx:id="price" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <TextField fx:id="price" onAction="#nextPos" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets left="20.0" right="20.0" />
                </GridPane.margin>
             </TextField>
-            <TextField fx:id="sum" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <TextField fx:id="sum" onAction="#nextPos" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets left="20.0" right="20.0" />
                </GridPane.margin>
             </TextField>
-            <DatePicker fx:id="date" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <TextField fx:id="profit" onAction="#nextPos" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <GridPane.margin>
                   <Insets left="20.0" right="20.0" />
                </GridPane.margin>
-            </DatePicker>
+            </TextField>
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                <children>
-                  <Button onMouseClicked="#savePosition" mnemonicParsing="false" text="Сохранить">
+                  <Button fx:id="save" mnemonicParsing="false" onAction="#savePosition" onMouseClicked="#savePosition" text="Сохранить">
                      <HBox.margin>
                         <Insets right="20.0" />
                      </HBox.margin>
                   </Button>
-                  <Button onMouseClicked="#closeFrame" mnemonicParsing="false" text="Закрыть">
+                  <Button mnemonicParsing="false" onMouseClicked="#closeFrame" text="Закрыть">
                      <HBox.margin>
                         <Insets right="20.0" />
                      </HBox.margin>
