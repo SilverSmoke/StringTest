@@ -6,6 +6,7 @@ import checks.model.StringOfCheck;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -29,6 +30,12 @@ public class Controller {
     public Label balance;
     @FXML
     public Label sumProfit;
+    @FXML
+    public RadioButton butMarket;
+    @FXML
+    public RadioButton butSection;
+    @FXML
+    public RadioButton butProduct;
 
     private ObservableList<StringOfCheck> checkData = FXCollections.observableArrayList();
 
@@ -135,6 +142,7 @@ public class Controller {
 
         balance.setText(String.valueOf(profitSum - priceSum));
 
+        interval.setValue(LocalDate.now());
 
     }
 
@@ -216,7 +224,24 @@ public class Controller {
 
         String query = "SELECT * FROM `transaction` WHERE `time` >= " + secondStart + " AND `time` < " + secondEnd + " ORDER BY `time`;";
 */
+
         initData("");
+
+    }
+
+    @FXML
+    public void selectForm(Event event) {
+
+        if(event.getSource().equals(butMarket)){
+            butProduct.setSelected(false);
+            butSection.setSelected(false);
+        }else if(event.getSource().equals(butSection)){
+            butMarket.setSelected(false);
+            butProduct.setSelected(false);
+        }else{
+            butMarket.setSelected(false);
+            butSection.setSelected(false);
+        }
 
     }
 }

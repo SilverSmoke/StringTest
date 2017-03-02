@@ -3,13 +3,19 @@ package checks.controlls;
 import checks.model.DBManager;
 import checks.model.StringOfCheck;
 import javafx.beans.property.ReadOnlyObjectProperty;
-import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.geometry.Side;
 import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  * Created by belikov.a on 17.02.2017.
@@ -26,8 +32,6 @@ public class ControllerEditFrame {
     @FXML
     public TextField sum;
     @FXML
-    public DatePicker date;
-    @FXML
     public TextField product;
     @FXML
     public Button save;
@@ -36,12 +40,58 @@ public class ControllerEditFrame {
 
     private Stage dialogStage;
 
+    private HashSet<String> markets = new HashSet<>();
+
+    private HashSet<String> sections = new HashSet<>();
+
+    private HashSet<String> products = new HashSet<>();
+
 
     //private ReadOnlyObjectProperty<StringOfCheck> object = null;
 
     @FXML
     private void initialize(){
+
         sum.setText("1");
+        price.setText("0.0");
+        profit.setText("0.0");
+
+        markets = setSets("market");
+        sections = setSets("section");
+        products = setSets("product");
+    }
+
+    private HashSet<String> setSets(String id) {
+
+        String query = "SELECT `" + id + "` FROM `transaction`";
+
+        ResultSet resultSet = DBManager.getResult(query);
+
+        HashSet setName = new HashSet();
+        try {
+            while (resultSet.next()) {
+
+                Iterator iter = setName.iterator();
+
+                int count = 0;
+
+                while(iter.hasNext()){
+
+                    if(iter.next().equals(resultSet.getString(1))){
+                        count++;
+                        break;
+                    }
+
+                }
+
+                if(count == 0)setName.add(resultSet.getString(1));
+
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return setName;
     }
 
     public void setTransaction(ReadOnlyObjectProperty<StringOfCheck> object){
@@ -89,7 +139,7 @@ public class ControllerEditFrame {
 
     }
 
-    public void closeFrame(MouseEvent mouseEvent) {
+    public void closeFrame() {
 
         dialogStage.close();
 
@@ -106,20 +156,127 @@ public class ControllerEditFrame {
     }
 
     @FXML
-    public void nextPos(Event actionEvent) {
+    public void nextPos(KeyEvent event) {
 
-        TextField field = (TextField) actionEvent.getSource();
+        if(!event.getCode().getName().equals("Enter"))return;
 
-        String id = ((TextField) actionEvent.getSource()).getId();
+        TextField field = (TextField) event.getSource();
+
+        String id = field.getId();
+
+        System.out.println(field);
+
+        if(id.equals("price")){
+            sum.requestFocus();
+            return;
+        }
+        if(id.equals("sum")){
+            profit.requestFocus();
+            return;
+        }
+        if(id.equals("profit")){
+            save.requestFocus();
+            return;
+        }
 
         if(id.equals("market"))section.requestFocus();
         if(id.equals("section"))product.requestFocus();
         if(id.equals("product"))price.requestFocus();
-        if(id.equals("price"))sum.requestFocus();
-        if(id.equals("sum"))profit.requestFocus();
-        if(id.equals("profit"))save.requestFocus();
+
+    }
+
+    @FXML
+    public void typing(KeyEvent event) {
+
+        TextField field = (TextField) event.getSource();
+
+        ContextMenu menu = field.getContextMenu();
+
+        MenuItem item = menu.getItems().get(0);
+
+        System.out.println(event.getCode().getName());
+
+        if(event.getEventType().getName().equals("KEY_RELEASED")) {
+
+            if (event.getCode().getName().equals("Enter")) {
+
+                if(!item.getText().equals("")) {
+
+                    field.setText(item.getText());
+
+                }
+
+                item.setText("");
+
+                field.getContextMenu().hide();
+
+                nextPos(event);
+
+                return;
+            }
+
+            String id = field.getId();
+
+            String subS = "";
+
+            try {
+
+                subS = field.getText();
+
+            }catch (Exception e){
+                System.out.println(e);
+            }
+
+            String matchString = "";
+
+            if (subS.length() != 0) {
+
+                HashSet<String> hashSet = getHashSet(id);
 
 
+                for (String s : hashSet) {
 
+                    //System.out.println(s);
+
+                    if (s.toLowerCase().contains(field.getText().toLowerCase())) {
+
+                        System.out.println("Открыть");
+
+                        matchString = s;
+
+                        break;
+
+                    }
+                }
+
+                if (!matchString.equals("")) {
+                    item.setText(matchString);
+                    menu.show(field, Side.BOTTOM, 0, 0);
+                } else {
+                    item.setText("");
+                    menu.hide();
+                }
+
+            } else {
+                item.setText("");
+                menu.hide();
+            }
+        }
+    }
+
+    private HashSet<String> getHashSet(String id) {
+
+        HashSet<String> hashSet = null;
+
+        if(id.equals("market")){
+            hashSet = markets;
+        }
+        else if(id.equals("section")){
+            hashSet = sections;
+        }
+        else if(id.equals("product")){
+            hashSet = products;
+        }
+        return hashSet;
     }
 }

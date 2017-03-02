@@ -65,17 +65,17 @@
                                        <VBox.margin>
                                           <Insets top="5.0" />
                                        </VBox.margin></Label>
-                                    <RadioButton mnemonicParsing="false" prefWidth="100.0" text="Магазин">
+                                    <RadioButton fx:id="butMarket" onMouseClicked="#selectForm" mnemonicParsing="false" prefWidth="100.0" text="Магазин">
                                        <VBox.margin>
                                           <Insets left="5.0" top="5.0" />
                                        </VBox.margin>
                                     </RadioButton>
-                                    <RadioButton mnemonicParsing="false" prefWidth="100.0" text="Отдел     ">
+                                    <RadioButton fx:id="butSection" onMouseClicked="#selectForm" mnemonicParsing="false" prefWidth="100.0" text="Отдел     ">
                                        <VBox.margin>
                                           <Insets left="5.0" top="5.0" />
                                        </VBox.margin>
                                     </RadioButton>
-                                    <RadioButton mnemonicParsing="false" prefWidth="100.0" text="Продукт   ">
+                                    <RadioButton fx:id="butProduct" onMouseClicked="#selectForm" mnemonicParsing="false" prefWidth="100.0" text="Продукт   ">
                                        <VBox.margin>
                                           <Insets left="5.0" top="5.0" />
                                        </VBox.margin>
